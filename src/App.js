@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Message from "./components/quotes/Message";
 import { Loader } from "react-feather";
 import Quotes from "./components/quotes/Quotes";
 import QuoteCard from "./components/quotes/QuoteCard";
@@ -12,6 +13,8 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState("All");
   const [favoriteQuotes, setFavoriteQuotes] = useState([]);
+  const [messageText, setMessageText] = useState("");
+  const [showMessage, setShowMessage] = useState(false);
   const maxFaves = 3;
 
   const quotesUrl =
@@ -57,17 +60,24 @@ function App() {
     const alreadyFavorite = favoriteQuotes.find(
       (favorite) => favorite.id === selectedQuote.id
     );
-    console.log(alreadyFavorite);
+
     if (alreadyFavorite) {
-      console.log("You already favorited this quote silly goose");
+      setMessageText("You already favorited this quote silly goose");
+      setShowMessage(true);
     } else if (favoriteQuotes.length < maxFaves) {
       setFavoriteQuotes([...favoriteQuotes, selectedQuote]);
-      console.log("Added to favorites");
+      setMessageText("Added to favorites");
+      setShowMessage(true);
     } else {
-      console.log(
+      setMessageText(
         "Max number of quotes reached. Please delete one to add a new one"
       );
+      setShowMessage(true);
     }
+  };
+
+  const removeMessage = () => {
+    setShowMessage(false);
   };
 
   const removeFromFavorites = (quoteId) => {
@@ -80,6 +90,9 @@ function App() {
   return (
     <div className="App">
       <Header />
+      {showMessage && (
+        <Message messageText={messageText} removeMessage={removeMessage} />
+      )}
       <main>
         <FavoriteQuotes
           favoriteQuotes={favoriteQuotes}
