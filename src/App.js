@@ -4,7 +4,7 @@ import Footer from "./components/Footer";
 import Message from "./components/quotes/Message";
 import { Loader } from "react-feather";
 import Quotes from "./components/quotes/Quotes";
-import QuoteCard from "./components/quotes/QuoteCard";
+
 import FavoriteQuotes from "./components/quotes/FavoriteQuotes";
 import "./App.css";
 
