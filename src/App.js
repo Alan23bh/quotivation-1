@@ -12,7 +12,9 @@ function App() {
   const [quotes, setQuotes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState("All");
-  const [favoriteQuotes, setFavoriteQuotes] = useState([]);
+  const [favoriteQuotes, setFavoriteQuotes] = useState(
+    JSON.parse(window.localStorage.getItem("favoriteQuotes")) || []
+  );
   const [messageText, setMessageText] = useState("");
   const [showMessage, setShowMessage] = useState(false);
   const maxFaves = 3;
@@ -45,6 +47,13 @@ function App() {
   useEffect(() => {
     fetchQuotes();
   }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      "favoriteQuotes",
+      JSON.stringify(favoriteQuotes)
+    );
+  }, [favoriteQuotes]);
 
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
@@ -99,13 +108,7 @@ function App() {
           maxFaves={maxFaves}
           removeFromFavorites={removeFromFavorites}
         />
-        <section className="favorite-quotes">
-          <div className="wrapper quotes">
-            <h3>Top 3 favorite quotes</h3>
 
-            {favoriteQuotes.length > 0 && JSON.stringify(favoriteQuotes)}
-          </div>
-        </section>
         {loading ? (
           <Loader />
         ) : (
